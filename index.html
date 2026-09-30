@@ -1,473 +1,156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MacroDreams — The First Encounter</title>
-<meta name="description" content="MacroDreams — The First Encounter.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MacroDreams — Prototype 01</title>
 <style>
-  :root {
-    --bg: #050608;
-    --ink: #eeeae2;
-    --muted: rgba(238,234,226,.42);
-    --violet: #a99cff;
-    --warm: #e8c987;
+  :root{
+    --bg:#050609; --text:#eeeae3; --muted:#8b8b91;
+    --glow:#b7d9ff; --warm:#d6a77b;
   }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg);
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--text)}
+  canvas{display:block;width:100%;height:100%;cursor:grab}
+  canvas.dragging{cursor:grabbing}
+  .ui{position:fixed;inset:0;pointer-events:none}
+  .brand{position:absolute;top:28px;left:32px;letter-spacing:.22em;font-size:11px;color:#c9c7c3;text-transform:uppercase}
+  .hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:11px;letter-spacing:.12em;color:#686a72;text-transform:uppercase;white-space:nowrap}
+  .dna{
+    position:absolute;right:7vw;top:50%;transform:translateY(-50%) translateX(18px);
+    width:min(310px,34vw);opacity:0;transition:opacity .45s,transform .45s;
   }
-
-  body {
-    color: var(--ink);
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", sans-serif;
-    cursor: default;
-    user-select: none;
-  }
-
-  #world {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at 50% 48%, rgba(86,74,130,.055), transparent 32%),
-      radial-gradient(circle at 72% 22%, rgba(190,150,80,.018), transparent 22%),
-      #050608;
-  }
-
-  #space {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .dust {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.18);
-    transform: translate(-50%, -50%);
-    transition: opacity 1.2s ease;
-  }
-
-  #unknown {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 13px;
-    height: 13px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background: #dcd5ff;
-    opacity: .18;
-    box-shadow:
-      0 0 10px rgba(169,156,255,.22),
-      0 0 34px rgba(169,156,255,.09);
-    transition:
-      width .8s ease,
-      height .8s ease,
-      opacity .8s ease,
-      box-shadow .8s ease;
-    will-change: left, top, transform;
-  }
-
-  #unknown::after {
-    content: "";
-    position: absolute;
-    inset: -9px;
-    border: 1px solid rgba(169,156,255,0);
-    border-radius: 50%;
-    transform: scale(.7);
-    transition: transform 1s ease, border-color 1s ease;
-  }
-
-  #unknown.awake {
-    opacity: .42;
-  }
-
-  #unknown.near {
-    width: 17px;
-    height: 17px;
-    opacity: .68;
-    box-shadow:
-      0 0 14px rgba(169,156,255,.42),
-      0 0 52px rgba(169,156,255,.14);
-  }
-
-  #unknown.near::after {
-    border-color: rgba(169,156,255,.12);
-    transform: scale(1);
-  }
-
-  #unknown.holding {
-    width: 22px;
-    height: 22px;
-    opacity: .95;
-    box-shadow:
-      0 0 20px rgba(169,156,255,.72),
-      0 0 80px rgba(169,156,255,.18);
-  }
-
-  #unknown.holding::after {
-    border-color: rgba(232,201,135,.35);
-    transform: scale(1.45);
-  }
-
-  .pulse {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 12px;
-    height: 12px;
-    border: 1px solid rgba(232,201,135,.35);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(.2);
-    pointer-events: none;
-    animation: pulseOut 1.5s ease-out forwards;
-  }
-
-  @keyframes pulseOut {
-    to {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(7);
-    }
-  }
-
-  #hint {
-    position: absolute;
-    left: 50%;
-    bottom: 11vh;
-    transform: translateX(-50%);
-    color: rgba(238,234,226,.25);
-    font-size: 11px;
-    letter-spacing: .18em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-    white-space: nowrap;
-  }
-
-  #hint.visible { opacity: 1; }
-
-  #message {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    pointer-events: none;
-    text-align: center;
-    padding: 30px;
-  }
-
-  #message span {
-    max-width: 600px;
-    color: rgba(238,234,226,.82);
-    font-size: clamp(18px, 2.4vw, 30px);
-    font-weight: 400;
-    letter-spacing: -.025em;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
-  }
-
-  #message.show span {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  #message.fade span {
-    opacity: 0;
-    transform: translateY(-6px);
-  }
-
-  #return {
-    position: absolute;
-    left: 50%;
-    bottom: 8vh;
-    transform: translateX(-50%);
-    color: rgba(238,234,226,.36);
-    font-size: 10px;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 2s ease;
-    white-space: nowrap;
-  }
-
-  #return.show { opacity: 1; }
-
-  #vignette {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(circle at center, transparent 30%, rgba(0,0,0,.28) 78%, rgba(0,0,0,.58));
-  }
-
-  #restart {
-    position: absolute;
-    top: 28px;
-    right: 30px;
-    border: 0;
-    background: transparent;
-    color: rgba(238,234,226,.16);
-    font: 10px ui-monospace, SFMono-Regular, Menlo, monospace;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity .6s ease, color .25s ease;
-    cursor: pointer;
-  }
-
-  #restart.show { opacity: 1; }
-  #restart:hover { color: rgba(238,234,226,.55); }
-
-  @media (max-width: 700px) {
-    #hint { bottom: 13vh; }
-    #return { bottom: 9vh; }
-  }
+  .dna.show{opacity:1;transform:translateY(-50%) translateX(0)}
+  .eyebrow{font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#777982;margin-bottom:14px}
+  .name{font-family:Georgia,serif;font-size:clamp(34px,5vw,62px);font-weight:400;letter-spacing:-.04em;margin:0 0 12px}
+  .line{height:1px;background:linear-gradient(90deg,rgba(255,255,255,.28),transparent);margin:16px 0}
+  .desc{font-size:13px;line-height:1.65;color:#aaaab0;max-width:280px}
+  .swatches{display:flex;gap:7px;margin-top:20px}
+  .sw{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.14)}
+  .meta{margin-top:18px;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:#666870}
+  .flash{position:absolute;left:50%;top:50%;width:5px;height:5px;border-radius:50%;background:#fff;transform:translate(-50%,-50%) scale(.5);opacity:0}
+  .flash.on{animation:flash .7s ease-out}
+  @keyframes flash{0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(18)}}
 </style>
 </head>
-
 <body>
-<div id="world">
-  <div id="space"></div>
-  <div id="unknown" aria-label="Unknown"></div>
-  <div id="message"><span></span></div>
-  <div id="hint">stay close</div>
-  <div id="return">there are other things here</div>
-  <button id="restart" type="button">begin again</button>
-  <div id="vignette"></div>
+<canvas id="globe"></canvas>
+<div class="ui">
+  <div class="brand">MACRODREAMS</div>
+  <div id="dna" class="dna">
+    <div class="eyebrow">Visual DNA · <span id="index">01</span></div>
+    <h1 id="name" class="name">JEXTER</h1>
+    <div class="line"></div>
+    <div id="desc" class="desc">Sharp curiosity. Controlled chaos. A personality that turns uncertainty into movement.</div>
+    <div id="swatches" class="swatches"></div>
+    <div id="meta" class="meta">curiosity / tension / velocity</div>
+  </div>
+  <div class="hint">drag the world · touch a point</div>
+  <div id="flash" class="flash"></div>
 </div>
 
 <script>
-(() => {
-  const world = document.getElementById("world");
-  const space = document.getElementById("space");
-  const unknown = document.getElementById("unknown");
-  const hint = document.getElementById("hint");
-  const message = document.getElementById("message");
-  const messageText = message.querySelector("span");
-  const returnText = document.getElementById("return");
-  const restart = document.getElementById("restart");
+const canvas=document.getElementById('globe'), ctx=canvas.getContext('2d');
+let W,H,DPR,cx,cy,R,rot=0,drag=false,lastX=0,points=[],selected=-1,pulse=0;
 
-  const state = {
-    started: false,
-    near: false,
-    holding: false,
-    pulses: 0,
-    holdTime: 0,
-    lastMove: 0,
-    x: innerWidth * .5,
-    y: innerHeight * .5,
-    targetX: innerWidth * .5,
-    targetY: innerHeight * .5,
-    baseX: innerWidth * .5,
-    baseY: innerHeight * .5,
-    phase: 0,
-    finished: false
-  };
+const DNAs=[
+ {name:"JEXTER",desc:"Sharp curiosity. Controlled chaos. A personality that turns uncertainty into movement.",colors:["#101218","#9eb9d6","#d19a70"],meta:"curiosity / tension / velocity"},
+ {name:"ORACLE",desc:"Quiet perception. Pattern before proof. It watches long enough for the hidden shape to appear.",colors:["#0b1114","#9aa89b","#d8c8a5"],meta:"intuition / patience / depth"},
+ {name:"MUSE",desc:"Soft magnetism. Sensory, elusive, slightly impossible to pin down.",colors:["#151018","#c59ab9","#e6c6a6"],meta:"beauty / emotion / ambiguity"},
+ {name:"ARCHITECT",desc:"Order with imagination. It sees structures where everyone else sees fragments.",colors:["#0c1116","#9aaec3","#c8c1a8"],meta:"structure / clarity / invention"},
+ {name:"REBEL",desc:"Instinct over permission. A little friction, deliberately left unresolved.",colors:["#130d0d","#bd7064","#d4aa77"],meta:"friction / instinct / freedom"}
+];
 
-  // Sparse atmosphere: intentionally restrained.
-  for (let i = 0; i < 90; i++) {
-    const d = document.createElement("i");
-    d.className = "dust";
-    d.style.left = `${Math.random() * 100}%`;
-    d.style.top = `${Math.random() * 100}%`;
-    d.style.opacity = `${0.035 + Math.random() * .12}`;
-    d.style.transform = `translate(-50%, -50%) scale(${0.5 + Math.random() * 1.5})`;
-    space.appendChild(d);
-  }
+function resize(){
+ DPR=Math.min(devicePixelRatio||1,2); W=innerWidth; H=innerHeight;
+ canvas.width=W*DPR; canvas.height=H*DPR; canvas.style.width=W+"px";canvas.style.height=H+"px";
+ ctx.setTransform(DPR,0,0,DPR,0,0); cx=W*.43; cy=H*.52; R=Math.min(H*.39,W*.31);
+ if(!points.length) makePoints();
+}
+function makePoints(){
+ points=[];
+ // spherical point distribution, then gently rotate around the globe
+ for(let i=0;i<42;i++){
+   const u=Math.random()*2-1, a=Math.random()*Math.PI*2;
+   points.push({lat:Math.asin(u),lon:a,seed:Math.random()*10,size:1.2+Math.random()*1.5});
+ }
+}
+function project(p){
+ const lon=p.lon+rot, lat=p.lat;
+ const x=Math.cos(lat)*Math.sin(lon);
+ const y=Math.sin(lat);
+ const z=Math.cos(lat)*Math.cos(lon);
+ return {x:cx+x*R,y:cy-y*R,z};
+}
+function draw(){
+ ctx.clearRect(0,0,W,H);
+ // atmospheric halo
+ const g=ctx.createRadialGradient(cx,cy,R*.55,cx,cy,R*1.1);
+ g.addColorStop(0,"rgba(55,78,105,.08)");g.addColorStop(.75,"rgba(20,30,44,.035)");g.addColorStop(1,"rgba(0,0,0,0)");
+ ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,R*1.18,0,Math.PI*2);ctx.fill();
 
-  function dist(ax, ay, bx, by) {
-    return Math.hypot(ax - bx, ay - by);
-  }
+ // globe
+ const gg=ctx.createRadialGradient(cx-R*.3,cy-R*.35,R*.05,cx,cy,R);
+ gg.addColorStop(0,"rgba(40,48,61,.72)");gg.addColorStop(.48,"rgba(14,18,25,.9)");gg.addColorStop(1,"rgba(3,5,8,.98)");
+ ctx.fillStyle=gg;ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle="rgba(160,185,215,.12)";ctx.lineWidth=1;ctx.stroke();
 
-  function show(text, duration = 2200) {
-    messageText.textContent = text;
-    message.classList.remove("fade");
-    message.classList.add("show");
-    window.clearTimeout(show.timer);
-    show.timer = window.setTimeout(() => {
-      message.classList.add("fade");
-      window.setTimeout(() => message.classList.remove("show"), 1500);
-    }, duration);
-  }
+ // subtle longitude/latitude
+ ctx.save();ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.clip();
+ ctx.strokeStyle="rgba(160,180,205,.045)";ctx.lineWidth=1;
+ for(let i=-3;i<=3;i++){let x=cx+i*R*.27;ctx.beginPath();ctx.ellipse(x,cy,R*.22,R,0,0,Math.PI*2);ctx.stroke()}
+ for(let i=-2;i<=2;i++){let y=cy+i*R*.27;ctx.beginPath();ctx.ellipse(cx,y,R,Math.max(2,R*.18),0,0,Math.PI*2);ctx.stroke()}
+ ctx.restore();
 
-  function pulseAt(x, y) {
-    const p = document.createElement("i");
-    p.className = "pulse";
-    p.style.left = `${x}px`;
-    p.style.top = `${y}px`;
-    world.appendChild(p);
-    p.addEventListener("animationend", () => p.remove());
-  }
-
-  function startExperience() {
-    if (state.started) return;
-    state.started = true;
-    state.lastMove = performance.now();
-  }
-
-  function handlePointerMove(e) {
-    startExperience();
-
-    state.x = e.clientX;
-    state.y = e.clientY;
-    state.lastMove = performance.now();
-
-    const r = unknown.getBoundingClientRect();
-    const ux = r.left + r.width / 2;
-    const uy = r.top + r.height / 2;
-    const d = dist(state.x, state.y, ux, uy);
-
-    if (d < 115 && !state.near) {
-      state.near = true;
-      unknown.classList.add("near");
-      hint.classList.add("visible");
-    }
-
-    if (d > 165 && state.near && !state.holding) {
-      state.near = false;
-      unknown.classList.remove("near");
-    }
-  }
-
-  function beginHold(e) {
-    if (state.finished) return;
-
-    const r = unknown.getBoundingClientRect();
-    const ux = r.left + r.width / 2;
-    const uy = r.top + r.height / 2;
-
-    if (dist(e.clientX, e.clientY, ux, uy) > 125) return;
-
-    state.holding = true;
-    state.holdTime = 0;
-    unknown.classList.add("holding");
-    hint.classList.remove("visible");
-  }
-
-  function endHold() {
-    if (!state.holding) return;
-
-    state.holding = false;
-    unknown.classList.remove("holding");
-
-    // Consequence: the accumulated hold subtly changes the world.
-    const amount = Math.min(1, state.holdTime / 1800);
-    const angle = Math.random() * Math.PI * 2;
-    const distance = 100 + amount * 150;
-
-    state.targetX = innerWidth / 2 + Math.cos(angle) * distance;
-    state.targetY = innerHeight / 2 + Math.sin(angle) * distance;
-
-    pulseAt(innerWidth / 2, innerHeight / 2);
-
-    window.setTimeout(() => {
-      unknown.style.transition =
-        "left 2.8s cubic-bezier(.2,.8,.2,1), top 2.8s cubic-bezier(.2,.8,.2,1), " +
-        "width .8s ease, height .8s ease, opacity .8s ease, box-shadow .8s ease";
-
-      unknown.style.left = `${state.targetX}px`;
-      unknown.style.top = `${state.targetY}px`;
-
-      // The consequence is not immediate. Let the visitor notice the change.
-      window.setTimeout(() => {
-        show("You made that happen.", 2300);
-
-        window.setTimeout(() => {
-          show("Or did you?", 2100);
-
-          window.setTimeout(() => {
-            returnText.classList.add("show");
-            restart.classList.add("show");
-            state.finished = true;
-            spawnSecondPresence();
-          }, 2600);
-        }, 3000);
-      }, 1800);
-    }, 650);
-  }
-
-  function spawnSecondPresence() {
-    const second = document.createElement("div");
-    second.id = "second";
-    second.style.cssText = `
-      position:absolute;
-      left:${18 + Math.random() * 64}%;
-      top:${20 + Math.random() * 58}%;
-      width:4px;height:4px;border-radius:50%;
-      background:rgba(232,201,135,.32);
-      box-shadow:0 0 18px rgba(232,201,135,.15);
-      opacity:0;
-      transition:opacity 3s ease, transform 2s ease;
-    `;
-    world.appendChild(second);
-    requestAnimationFrame(() => {
-      second.style.opacity = "1";
-      second.style.transform = "scale(1.8)";
-    });
-  }
-
-  function reset() {
-    location.reload();
-  }
-
-  window.addEventListener("pointermove", handlePointerMove, { passive: true });
-  window.addEventListener("pointerdown", beginHold);
-  window.addEventListener("pointerup", endHold);
-  window.addEventListener("pointercancel", endHold);
-  restart.addEventListener("click", reset);
-
-  let previous = performance.now();
-
-  function tick(now) {
-    const dt = Math.min(50, now - previous);
-    previous = now;
-    state.phase += dt * .001;
-
-    if (state.holding) {
-      state.holdTime += dt;
-
-      // Eleven pulses: not advertised, slightly irregular in timing.
-      const thresholds = [260, 470, 730, 910, 1190, 1360, 1530, 1710, 1930, 2150, 2410];
-      if (state.pulses < thresholds.length &&
-          state.holdTime >= thresholds[state.pulses]) {
-        const r = unknown.getBoundingClientRect();
-        pulseAt(r.left + r.width / 2, r.top + r.height / 2);
-        state.pulses++;
-      }
-    }
-
-    // Tiny autonomous drift: the world never feels completely static.
-    if (!state.holding && !state.finished) {
-      const driftX = Math.sin(state.phase * .43) * 3;
-      const driftY = Math.cos(state.phase * .31) * 2;
-      unknown.style.marginLeft = `${driftX}px`;
-      unknown.style.marginTop = `${driftY}px`;
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  requestAnimationFrame(tick);
-
-  window.addEventListener("resize", () => {
-    if (!state.finished) {
-      unknown.style.left = "50%";
-      unknown.style.top = "50%";
-    }
-  });
-})();
+ // points back-to-front
+ points.map((p,i)=>({p,i,q:project(p)})).sort((a,b)=>a.q.z-b.q.z).forEach(({p,i,q})=>{
+   if(q.z<-.02)return;
+   const selectedNow=i===selected;
+   const twinkle=.65+.35*Math.sin(performance.now()/650+p.seed);
+   const alpha=(.28+.72*Math.max(0,q.z))*twinkle;
+   ctx.beginPath();ctx.arc(q.x,q.y,selectedNow?3.6:p.size,0,Math.PI*2);
+   ctx.fillStyle=selectedNow?"rgba(245,232,210,1)":`rgba(192,213,237,${alpha})`;ctx.fill();
+   if(selectedNow){
+     ctx.beginPath();ctx.arc(q.x,q.y,8+Math.sin(pulse)*3,0,Math.PI*2);
+     ctx.strokeStyle="rgba(220,210,190,.28)";ctx.stroke();
+   }
+ });
+ requestAnimationFrame(draw);
+}
+function hit(x,y){
+ let best=-1,bd=18;
+ points.forEach((p,i)=>{
+   const q=project(p);if(q.z<0)return;
+   const d=Math.hypot(q.x-x,q.y-y);
+   if(d<bd){bd=d;best=i}
+ });
+ return best;
+}
+function select(i){
+ if(i<0)return;
+ selected=i;pulse=0;
+ const d=DNAs[i%DNAs.length];
+ document.getElementById("name").textContent=d.name;
+ document.getElementById("desc").textContent=d.desc;
+ document.getElementById("meta").textContent=d.meta;
+ document.getElementById("index").textContent=String(i%DNAs.length+1).padStart(2,"0");
+ document.getElementById("swatches").innerHTML=d.colors.map(c=>`<span class="sw" style="background:${c}"></span>`).join("");
+ document.getElementById("dna").classList.add("show");
+ const f=document.getElementById("flash");f.classList.remove("on");void f.offsetWidth;f.classList.add("on");
+}
+canvas.addEventListener("pointerdown",e=>{drag=true;lastX=e.clientX;canvas.classList.add("dragging")});
+canvas.addEventListener("pointermove",e=>{
+ if(!drag)return;
+ rot+=(e.clientX-lastX)/R*.75;lastX=e.clientX;
+});
+canvas.addEventListener("pointerup",e=>{
+ if(!drag)return;drag=false;canvas.classList.remove("dragging");
+ if(Math.abs(e.clientX-lastX)<4)select(hit(e.clientX,e.clientY));
+});
+canvas.addEventListener("pointercancel",()=>{drag=false});
+canvas.addEventListener("click",e=>{ if(Math.abs(e.clientX-lastX)<2) select(hit(e.clientX,e.clientY)); });
+addEventListener("resize",resize);resize();draw();
+setInterval(()=>pulse+=.12,30);
 </script>
 </body>
 </html>
