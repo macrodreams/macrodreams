@@ -1,345 +1,473 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MacroDreams — Watch Closely</title>
-  <meta name="description" content="MacroDreams is a creative laboratory where curiosity meets possibility." />
-  <style>
-    :root{
-      --bg:#080808;
-      --paper:#eee9df;
-      --muted:#928e86;
-      --line:#262522;
-      --violet:#a78bfa;
-      --gold:#e5c76b;
-      --max:1180px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--paper);
-      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      line-height:1.5;
-      overflow-x:hidden;
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{width:min(var(--max),calc(100% - 48px));margin:auto}
-    nav{
-      height:78px;display:flex;align-items:center;justify-content:space-between;
-      border-bottom:1px solid var(--line);font-size:13px;letter-spacing:.04em;
-    }
-    .brand{font-size:15px;font-weight:600;letter-spacing:.02em}
-    .navlinks{display:flex;gap:28px;color:var(--muted)}
-    .navlinks a:hover{color:var(--paper)}
-    .eyebrow{
-      color:var(--gold);text-transform:uppercase;letter-spacing:.16em;
-      font-size:10px;font-weight:600;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MacroDreams — The First Encounter</title>
+<meta name="description" content="MacroDreams — The First Encounter.">
+<style>
+  :root {
+    --bg: #050608;
+    --ink: #eeeae2;
+    --muted: rgba(238,234,226,.42);
+    --violet: #a99cff;
+    --warm: #e8c987;
+  }
 
-    /* HERO — animation intentionally preserved */
-    .hero{
-      min-height:calc(100vh - 78px);display:grid;
-      grid-template-columns:1.05fr .95fr;align-items:center;gap:60px;
-      padding:72px 0 90px;
-    }
-    .hero-copy{position:relative;z-index:2}
-    h1{
-      font-size:clamp(58px,8vw,112px);line-height:.88;letter-spacing:-.065em;
-      font-weight:500;margin:22px 0 30px;max-width:850px;
-    }
-    .hero-lead{
-      max-width:570px;color:var(--muted);font-size:18px;line-height:1.65;
-      margin-bottom:34px;
-    }
-    .watch{
-      display:inline-flex;align-items:center;gap:12px;color:var(--paper);
-      font-size:13px;letter-spacing:.08em;text-transform:uppercase;
-    }
-    .watch span{
-      display:inline-grid;place-items:center;width:36px;height:36px;
-      border:1px solid #45423d;border-radius:50%;transition:.25s;
-    }
-    .watch:hover span{transform:translateX(4px);border-color:var(--paper)}
+  * { box-sizing: border-box; }
 
-    .stage{
-      position:relative;width:420px;height:420px;max-width:100%;
-      margin:auto;display:grid;place-items:center;
-    }
-    .orbit{
-      position:absolute;width:420px;height:420px;border:1px solid #252422;
-      border-radius:50%;animation:spin 18s linear infinite;
-    }
-    .orbit:before,.orbit:after{
-      content:"";position:absolute;width:7px;height:7px;border-radius:50%;
-      box-shadow:0 0 18px currentColor;
-    }
-    .orbit:before{top:8%;left:50%;background:var(--violet);color:var(--violet)}
-    .orbit:after{right:7%;bottom:29%;background:var(--gold);color:var(--gold)}
-    .orbit2{
-      position:absolute;width:310px;height:310px;border:1px dashed #1d1c1a;
-      border-radius:50%;animation:spinReverse 13s linear infinite;
-    }
-    .orbit2:before{
-      content:"";position:absolute;left:11%;top:17%;width:4px;height:4px;
-      border-radius:50%;background:var(--paper);box-shadow:0 0 14px #fff;
-    }
-    .core{
-      position:relative;width:126px;height:126px;border-radius:50%;
-      border:1px solid #4a463f;background:radial-gradient(circle at 38% 32%,#211d2d 0,#111 46%,#090909 72%);
-      display:grid;place-items:center;text-align:center;
-      box-shadow:0 0 80px rgba(167,139,250,.08);
-    }
-    .core:after{
-      content:"";position:absolute;inset:-8px;border:1px solid #181715;
-      border-radius:50%;animation:pulse 3s ease-in-out infinite;
-    }
-    .core b{font-size:13px;letter-spacing:.16em;font-weight:500}
-    .tag{
-      position:absolute;color:#66625b;font:10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
-      letter-spacing:.04em;
-    }
-    .tag.one{top:8%;right:4%}.tag.two{left:3%;bottom:23%}.tag.three{right:8%;bottom:7%}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes spinReverse{to{transform:rotate(-360deg)}}
-    @keyframes pulse{0%,100%{transform:scale(.96);opacity:.25}50%{transform:scale(1.06);opacity:.8}}
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+  }
 
-    .ticker{
-      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-      overflow:hidden;white-space:nowrap;padding:15px 0;color:#68645d;
-      font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.15em;
-    }
-    .ticker-inner{display:inline-block;animation:marquee 28s linear infinite}
-    @keyframes marquee{to{transform:translateX(-50%)}}
+  body {
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", sans-serif;
+    cursor: default;
+    user-select: none;
+  }
 
-    section{padding:125px 0;border-bottom:1px solid var(--line)}
-    .section-kicker{color:#6e6a63;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.15em;text-transform:uppercase}
-    .statement{
-      max-width:920px;font-size:clamp(38px,5.5vw,76px);line-height:1.02;
-      letter-spacing:-.045em;font-weight:450;margin:24px 0 0;
-    }
-    .statement em{font-style:normal;color:var(--violet)}
+  #world {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 48%, rgba(86,74,130,.055), transparent 32%),
+      radial-gradient(circle at 72% 22%, rgba(190,150,80,.018), transparent 22%),
+      #050608;
+  }
 
-    .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:70px}
-    .role{
-      background:var(--bg);padding:34px 30px;min-height:240px;
-    }
-    .role-no{color:#55514b;font:10px ui-monospace,SFMono-Regular,Menlo,monospace}
-    .role h3{font-size:24px;font-weight:500;margin:50px 0 12px}
-    .role p{color:var(--muted);font-size:14px;max-width:290px;line-height:1.65}
+  #space {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
 
-    .experiments{display:grid;grid-template-columns:.8fr 1.2fr;gap:90px;align-items:start}
-    .experiments h2,.philosophy h2{
-      font-size:clamp(38px,5vw,68px);line-height:.98;letter-spacing:-.05em;
-      font-weight:450;margin:18px 0;
-    }
-    .experiments-intro{color:var(--muted);max-width:400px}
-    .console{border:1px solid var(--line);background:#0b0b0b;padding:24px}
-    .console-head{display:flex;justify-content:space-between;color:#5e5a53;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:25px}
-    .log{display:grid;grid-template-columns:80px 1fr;gap:10px 18px;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}
-    .log .time{color:#4d4943}.log .text{color:#aaa49b}
-    .log .hot{color:var(--gold)}.log .violet{color:var(--violet)}
+  .dust {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.18);
+    transform: translate(-50%, -50%);
+    transition: opacity 1.2s ease;
+  }
 
-    .reveal{
-      margin-top:80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;
-      align-items:end;
-    }
-    .reveal-note{color:var(--muted);max-width:410px;font-size:15px;line-height:1.7}
-    .reveal-word{font-size:clamp(70px,10vw,150px);line-height:.8;letter-spacing:-.08em;text-align:right;font-weight:500}
+  #unknown {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 13px;
+    height: 13px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #dcd5ff;
+    opacity: .18;
+    box-shadow:
+      0 0 10px rgba(169,156,255,.22),
+      0 0 34px rgba(169,156,255,.09);
+    transition:
+      width .8s ease,
+      height .8s ease,
+      opacity .8s ease,
+      box-shadow .8s ease;
+    will-change: left, top, transform;
+  }
 
-    .philosophy{display:grid;grid-template-columns:1fr 1fr;gap:90px}
-    .philosophy-copy{color:var(--muted);font-size:17px;line-height:1.8;max-width:510px}
-    .question{
-      margin-top:48px;color:var(--paper);font-size:clamp(28px,3.5vw,48px);
-      line-height:1.08;letter-spacing:-.035em;
-    }
-    .question span{color:var(--gold)}
+  #unknown::after {
+    content: "";
+    position: absolute;
+    inset: -9px;
+    border: 1px solid rgba(169,156,255,0);
+    border-radius: 50%;
+    transform: scale(.7);
+    transition: transform 1s ease, border-color 1s ease;
+  }
 
-    .enter{
-      padding:150px 0 170px;text-align:center;position:relative;overflow:hidden;
-    }
-    .enter:before{
-      content:"";position:absolute;width:500px;height:500px;border-radius:50%;
-      left:50%;top:50%;transform:translate(-50%,-50%);
-      background:radial-gradient(circle,rgba(167,139,250,.08),transparent 65%);
-      pointer-events:none;
-    }
-    .enter .small{position:relative;color:#68645d;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase}
-    .enter h2{
-      position:relative;font-size:clamp(52px,8vw,105px);line-height:.88;
-      letter-spacing:-.065em;font-weight:500;margin:24px auto 38px;max-width:900px;
-    }
-    .enter a{
-      position:relative;display:inline-flex;align-items:center;gap:13px;
-      border:1px solid #403d38;padding:14px 20px;font-size:12px;
-      text-transform:uppercase;letter-spacing:.12em;transition:.25s;
-    }
-    .enter a:hover{border-color:#8c887f;transform:translateY(-2px)}
+  #unknown.awake {
+    opacity: .42;
+  }
 
-    footer{
-      border-top:1px solid var(--line);padding:25px 0;display:flex;
-      justify-content:space-between;color:#59554f;font-size:11px;
-    }
+  #unknown.near {
+    width: 17px;
+    height: 17px;
+    opacity: .68;
+    box-shadow:
+      0 0 14px rgba(169,156,255,.42),
+      0 0 52px rgba(169,156,255,.14);
+  }
 
-    @media(max-width:850px){
-      .wrap{width:min(var(--max),calc(100% - 32px))}
-      nav{height:68px}.navlinks{display:none}
-      .hero{grid-template-columns:1fr;gap:65px;padding:65px 0 90px}
-      h1{font-size:clamp(55px,15vw,90px)}
-      .stage{width:310px;height:310px}
-      .orbit{width:310px;height:310px}.orbit2{width:235px;height:235px}
-      .roles,.experiments,.philosophy,.reveal{grid-template-columns:1fr;gap:35px}
-      .roles{gap:1px}.role{min-height:190px}.role h3{margin-top:30px}
-      section{padding:90px 0}
-      .reveal-word{text-align:left}
-      .enter{padding:115px 0}
-      footer{gap:20px;flex-direction:column}
+  #unknown.near::after {
+    border-color: rgba(169,156,255,.12);
+    transform: scale(1);
+  }
+
+  #unknown.holding {
+    width: 22px;
+    height: 22px;
+    opacity: .95;
+    box-shadow:
+      0 0 20px rgba(169,156,255,.72),
+      0 0 80px rgba(169,156,255,.18);
+  }
+
+  #unknown.holding::after {
+    border-color: rgba(232,201,135,.35);
+    transform: scale(1.45);
+  }
+
+  .pulse {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(232,201,135,.35);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(.2);
+    pointer-events: none;
+    animation: pulseOut 1.5s ease-out forwards;
+  }
+
+  @keyframes pulseOut {
+    to {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(7);
     }
-  </style>
+  }
+
+  #hint {
+    position: absolute;
+    left: 50%;
+    bottom: 11vh;
+    transform: translateX(-50%);
+    color: rgba(238,234,226,.25);
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    white-space: nowrap;
+  }
+
+  #hint.visible { opacity: 1; }
+
+  #message {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    text-align: center;
+    padding: 30px;
+  }
+
+  #message span {
+    max-width: 600px;
+    color: rgba(238,234,226,.82);
+    font-size: clamp(18px, 2.4vw, 30px);
+    font-weight: 400;
+    letter-spacing: -.025em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
+  }
+
+  #message.show span {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #message.fade span {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  #return {
+    position: absolute;
+    left: 50%;
+    bottom: 8vh;
+    transform: translateX(-50%);
+    color: rgba(238,234,226,.36);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 2s ease;
+    white-space: nowrap;
+  }
+
+  #return.show { opacity: 1; }
+
+  #vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at center, transparent 30%, rgba(0,0,0,.28) 78%, rgba(0,0,0,.58));
+  }
+
+  #restart {
+    position: absolute;
+    top: 28px;
+    right: 30px;
+    border: 0;
+    background: transparent;
+    color: rgba(238,234,226,.16);
+    font: 10px ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity .6s ease, color .25s ease;
+    cursor: pointer;
+  }
+
+  #restart.show { opacity: 1; }
+  #restart:hover { color: rgba(238,234,226,.55); }
+
+  @media (max-width: 700px) {
+    #hint { bottom: 13vh; }
+    #return { bottom: 9vh; }
+  }
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <nav>
-      <a class="brand" href="#">MacroDreams</a>
-      <div class="navlinks">
-        <a href="#why">Why</a>
-        <a href="#experiments">Experiments</a>
-        <a href="#philosophy">Philosophy</a>
-      </div>
-    </nav>
+<div id="world">
+  <div id="space"></div>
+  <div id="unknown" aria-label="Unknown"></div>
+  <div id="message"><span></span></div>
+  <div id="hint">stay close</div>
+  <div id="return">there are other things here</div>
+  <button id="restart" type="button">begin again</button>
+  <div id="vignette"></div>
+</div>
 
-    <main>
-      <section class="hero">
-        <div class="hero-copy">
-          <div class="eyebrow">A creative laboratory for possibility</div>
-          <h1>What if the impossible was only unexplored?</h1>
-          <p class="hero-lead">
-            We experiment at the edge of imagination, technology and perception.
-            Some ideas become images. Some become films. Some become code.
-            The interesting ones become something we didn't expect.
-          </p>
-          <a class="watch" href="#experiments">
-            Watch closely <span>→</span>
-          </a>
-        </div>
+<script>
+(() => {
+  const world = document.getElementById("world");
+  const space = document.getElementById("space");
+  const unknown = document.getElementById("unknown");
+  const hint = document.getElementById("hint");
+  const message = document.getElementById("message");
+  const messageText = message.querySelector("span");
+  const returnText = document.getElementById("return");
+  const restart = document.getElementById("restart");
 
-        <!-- HERO ANIMATION: LOCKED -->
-        <div class="stage" aria-label="MacroDreams What If animation">
-          <div class="orbit"></div>
-          <div class="orbit2"></div>
-          <div class="core"><b>WHAT IF?</b></div>
-          <div class="tag one">possibility // 01</div>
-          <div class="tag two">unknown → form</div>
-          <div class="tag three">dream.exe</div>
-        </div>
-      </section>
+  const state = {
+    started: false,
+    near: false,
+    holding: false,
+    pulses: 0,
+    holdTime: 0,
+    lastMove: 0,
+    x: innerWidth * .5,
+    y: innerHeight * .5,
+    targetX: innerWidth * .5,
+    targetY: innerHeight * .5,
+    baseX: innerWidth * .5,
+    baseY: innerHeight * .5,
+    phase: 0,
+    finished: false
+  };
 
-      <div class="ticker">
-        <div class="ticker-inner">
-          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
-          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
-          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
-        </div>
-      </div>
+  // Sparse atmosphere: intentionally restrained.
+  for (let i = 0; i < 90; i++) {
+    const d = document.createElement("i");
+    d.className = "dust";
+    d.style.left = `${Math.random() * 100}%`;
+    d.style.top = `${Math.random() * 100}%`;
+    d.style.opacity = `${0.035 + Math.random() * .12}`;
+    d.style.transform = `translate(-50%, -50%) scale(${0.5 + Math.random() * 1.5})`;
+    space.appendChild(d);
+  }
 
-      <section id="why">
-        <div class="section-kicker">01 / The premise</div>
-        <p class="statement">
-          When making becomes easier, <em>imagination</em> becomes the real craft.
-        </p>
+  function dist(ax, ay, bx, by) {
+    return Math.hypot(ax - bx, ay - by);
+  }
 
-        <div class="roles">
-          <article class="role">
-            <div class="role-no">01 — THE QUESTION</div>
-            <h3>Deepak</h3>
-            <p>The human instinct: wonder, intuition, taste, judgment — and the question that starts everything.</p>
-          </article>
-          <article class="role">
-            <div class="role-no">02 — THE COUNTERPART</div>
-            <h3>Anika</h3>
-            <p>A curious intelligence that explores possibilities, challenges assumptions and keeps the conversation moving.</p>
-          </article>
-          <article class="role">
-            <div class="role-no">03 — THE SPACE</div>
-            <h3>MacroDreams</h3>
-            <p>The place where those two forces meet — and where an idea can become something neither side predicted.</p>
-          </article>
-        </div>
-      </section>
+  function show(text, duration = 2200) {
+    messageText.textContent = text;
+    message.classList.remove("fade");
+    message.classList.add("show");
+    window.clearTimeout(show.timer);
+    show.timer = window.setTimeout(() => {
+      message.classList.add("fade");
+      window.setTimeout(() => message.classList.remove("show"), 1500);
+    }, duration);
+  }
 
-      <section id="experiments">
-        <div class="experiments">
-          <div>
-            <div class="section-kicker">02 / The laboratory</div>
-            <h2>Don't take our word for it.</h2>
-            <p class="experiments-intro">
-              Step inside the experiments. We start with a question, choose whatever
-              medium feels right, and follow the transformation.
-            </p>
-          </div>
+  function pulseAt(x, y) {
+    const p = document.createElement("i");
+    p.className = "pulse";
+    p.style.left = `${x}px`;
+    p.style.top = `${y}px`;
+    world.appendChild(p);
+    p.addEventListener("animationend", () => p.remove());
+  }
 
-          <div class="console">
-            <div class="console-head">
-              <span>MACRODREAMS / LIVE LOG</span><span>● RUNNING</span>
-            </div>
-            <div class="log">
-              <span class="time">00:01</span><span class="text">question received</span>
-              <span class="time">00:07</span><span class="text violet">medium selected: unknown</span>
-              <span class="time">00:14</span><span class="text">first attempt rejected</span>
-              <span class="time">00:21</span><span class="text hot">unexpected behaviour detected</span>
-              <span class="time">00:29</span><span class="text">follow the strange thing</span>
-              <span class="time">00:43</span><span class="text violet">something is emerging…</span>
-              <span class="time">00:58</span><span class="text">result: not what we imagined</span>
-              <span class="time">01:00</span><span class="text hot">result: better question</span>
-            </div>
-          </div>
-        </div>
+  function startExperience() {
+    if (state.started) return;
+    state.started = true;
+    state.lastMove = performance.now();
+  }
 
-        <div class="reveal">
-          <p class="reveal-note">
-            The goal isn't to prove that a machine can make something.
-            That's the easy part now.
-            The interesting part is discovering what becomes possible when
-            curiosity has a new kind of counterpart.
-          </p>
-          <div class="reveal-word">REVEAL.</div>
-        </div>
-      </section>
+  function handlePointerMove(e) {
+    startExperience();
 
-      <section id="philosophy">
-        <div class="philosophy">
-          <div>
-            <div class="section-kicker">03 / The philosophy</div>
-            <h2>Two possibilities meet. Something else emerges.</h2>
-          </div>
-          <div>
-            <p class="philosophy-copy">
-              MacroDreams isn't really about AI. AI is one of the instruments.
-              The deeper experiment is the interaction itself:
-              human intuition meeting machine possibility, dream meeting transformation,
-              question meeting an answer that changes the question.
-            </p>
-            <p class="question">
-              If the medium no longer limits you,<br />
-              <span>what would you make?</span>
-            </p>
-          </div>
-        </div>
-      </section>
+    state.x = e.clientX;
+    state.y = e.clientY;
+    state.lastMove = performance.now();
 
-      <section class="enter">
-        <div class="small">There is always another experiment.</div>
-        <h2>Bring us a dream.</h2>
-        <a href="mailto:hello@macrodreams.ai">Enter the experiment →</a>
-      </section>
-    </main>
+    const r = unknown.getBoundingClientRect();
+    const ux = r.left + r.width / 2;
+    const uy = r.top + r.height / 2;
+    const d = dist(state.x, state.y, ux, uy);
 
-    <footer>
-      <span>MacroDreams © 2026</span>
-      <span>curiosity → possibility → wonder</span>
-    </footer>
-  </div>
+    if (d < 115 && !state.near) {
+      state.near = true;
+      unknown.classList.add("near");
+      hint.classList.add("visible");
+    }
+
+    if (d > 165 && state.near && !state.holding) {
+      state.near = false;
+      unknown.classList.remove("near");
+    }
+  }
+
+  function beginHold(e) {
+    if (state.finished) return;
+
+    const r = unknown.getBoundingClientRect();
+    const ux = r.left + r.width / 2;
+    const uy = r.top + r.height / 2;
+
+    if (dist(e.clientX, e.clientY, ux, uy) > 125) return;
+
+    state.holding = true;
+    state.holdTime = 0;
+    unknown.classList.add("holding");
+    hint.classList.remove("visible");
+  }
+
+  function endHold() {
+    if (!state.holding) return;
+
+    state.holding = false;
+    unknown.classList.remove("holding");
+
+    // Consequence: the accumulated hold subtly changes the world.
+    const amount = Math.min(1, state.holdTime / 1800);
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 100 + amount * 150;
+
+    state.targetX = innerWidth / 2 + Math.cos(angle) * distance;
+    state.targetY = innerHeight / 2 + Math.sin(angle) * distance;
+
+    pulseAt(innerWidth / 2, innerHeight / 2);
+
+    window.setTimeout(() => {
+      unknown.style.transition =
+        "left 2.8s cubic-bezier(.2,.8,.2,1), top 2.8s cubic-bezier(.2,.8,.2,1), " +
+        "width .8s ease, height .8s ease, opacity .8s ease, box-shadow .8s ease";
+
+      unknown.style.left = `${state.targetX}px`;
+      unknown.style.top = `${state.targetY}px`;
+
+      // The consequence is not immediate. Let the visitor notice the change.
+      window.setTimeout(() => {
+        show("You made that happen.", 2300);
+
+        window.setTimeout(() => {
+          show("Or did you?", 2100);
+
+          window.setTimeout(() => {
+            returnText.classList.add("show");
+            restart.classList.add("show");
+            state.finished = true;
+            spawnSecondPresence();
+          }, 2600);
+        }, 3000);
+      }, 1800);
+    }, 650);
+  }
+
+  function spawnSecondPresence() {
+    const second = document.createElement("div");
+    second.id = "second";
+    second.style.cssText = `
+      position:absolute;
+      left:${18 + Math.random() * 64}%;
+      top:${20 + Math.random() * 58}%;
+      width:4px;height:4px;border-radius:50%;
+      background:rgba(232,201,135,.32);
+      box-shadow:0 0 18px rgba(232,201,135,.15);
+      opacity:0;
+      transition:opacity 3s ease, transform 2s ease;
+    `;
+    world.appendChild(second);
+    requestAnimationFrame(() => {
+      second.style.opacity = "1";
+      second.style.transform = "scale(1.8)";
+    });
+  }
+
+  function reset() {
+    location.reload();
+  }
+
+  window.addEventListener("pointermove", handlePointerMove, { passive: true });
+  window.addEventListener("pointerdown", beginHold);
+  window.addEventListener("pointerup", endHold);
+  window.addEventListener("pointercancel", endHold);
+  restart.addEventListener("click", reset);
+
+  let previous = performance.now();
+
+  function tick(now) {
+    const dt = Math.min(50, now - previous);
+    previous = now;
+    state.phase += dt * .001;
+
+    if (state.holding) {
+      state.holdTime += dt;
+
+      // Eleven pulses: not advertised, slightly irregular in timing.
+      const thresholds = [260, 470, 730, 910, 1190, 1360, 1530, 1710, 1930, 2150, 2410];
+      if (state.pulses < thresholds.length &&
+          state.holdTime >= thresholds[state.pulses]) {
+        const r = unknown.getBoundingClientRect();
+        pulseAt(r.left + r.width / 2, r.top + r.height / 2);
+        state.pulses++;
+      }
+    }
+
+    // Tiny autonomous drift: the world never feels completely static.
+    if (!state.holding && !state.finished) {
+      const driftX = Math.sin(state.phase * .43) * 3;
+      const driftY = Math.cos(state.phase * .31) * 2;
+      unknown.style.marginLeft = `${driftX}px`;
+      unknown.style.marginTop = `${driftY}px`;
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+
+  window.addEventListener("resize", () => {
+    if (!state.finished) {
+      unknown.style.left = "50%";
+      unknown.style.top = "50%";
+    }
+  });
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MacroDreams — Watch Closely</title>
+  <meta name="description" content="MacroDreams is a creative laboratory where curiosity meets possibility." />
+  <style>
+    :root{
+      --bg:#080808;
+      --paper:#eee9df;
+      --muted:#928e86;
+      --line:#262522;
+      --violet:#a78bfa;
+      --gold:#e5c76b;
+      --max:1180px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--paper);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.5;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(var(--max),calc(100% - 48px));margin:auto}
+    nav{
+      height:78px;display:flex;align-items:center;justify-content:space-between;
+      border-bottom:1px solid var(--line);font-size:13px;letter-spacing:.04em;
+    }
+    .brand{font-size:15px;font-weight:600;letter-spacing:.02em}
+    .navlinks{display:flex;gap:28px;color:var(--muted)}
+    .navlinks a:hover{color:var(--paper)}
+    .eyebrow{
+      color:var(--gold);text-transform:uppercase;letter-spacing:.16em;
+      font-size:10px;font-weight:600;
+    }
+
+    /* HERO — animation intentionally preserved */
+    .hero{
+      min-height:calc(100vh - 78px);display:grid;
+      grid-template-columns:1.05fr .95fr;align-items:center;gap:60px;
+      padding:72px 0 90px;
+    }
+    .hero-copy{position:relative;z-index:2}
+    h1{
+      font-size:clamp(58px,8vw,112px);line-height:.88;letter-spacing:-.065em;
+      font-weight:500;margin:22px 0 30px;max-width:850px;
+    }
+    .hero-lead{
+      max-width:570px;color:var(--muted);font-size:18px;line-height:1.65;
+      margin-bottom:34px;
+    }
+    .watch{
+      display:inline-flex;align-items:center;gap:12px;color:var(--paper);
+      font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    }
+    .watch span{
+      display:inline-grid;place-items:center;width:36px;height:36px;
+      border:1px solid #45423d;border-radius:50%;transition:.25s;
+    }
+    .watch:hover span{transform:translateX(4px);border-color:var(--paper)}
+
+    .stage{
+      position:relative;width:420px;height:420px;max-width:100%;
+      margin:auto;display:grid;place-items:center;
+    }
+    .orbit{
+      position:absolute;width:420px;height:420px;border:1px solid #252422;
+      border-radius:50%;animation:spin 18s linear infinite;
+    }
+    .orbit:before,.orbit:after{
+      content:"";position:absolute;width:7px;height:7px;border-radius:50%;
+      box-shadow:0 0 18px currentColor;
+    }
+    .orbit:before{top:8%;left:50%;background:var(--violet);color:var(--violet)}
+    .orbit:after{right:7%;bottom:29%;background:var(--gold);color:var(--gold)}
+    .orbit2{
+      position:absolute;width:310px;height:310px;border:1px dashed #1d1c1a;
+      border-radius:50%;animation:spinReverse 13s linear infinite;
+    }
+    .orbit2:before{
+      content:"";position:absolute;left:11%;top:17%;width:4px;height:4px;
+      border-radius:50%;background:var(--paper);box-shadow:0 0 14px #fff;
+    }
+    .core{
+      position:relative;width:126px;height:126px;border-radius:50%;
+      border:1px solid #4a463f;background:radial-gradient(circle at 38% 32%,#211d2d 0,#111 46%,#090909 72%);
+      display:grid;place-items:center;text-align:center;
+      box-shadow:0 0 80px rgba(167,139,250,.08);
+    }
+    .core:after{
+      content:"";position:absolute;inset:-8px;border:1px solid #181715;
+      border-radius:50%;animation:pulse 3s ease-in-out infinite;
+    }
+    .core b{font-size:13px;letter-spacing:.16em;font-weight:500}
+    .tag{
+      position:absolute;color:#66625b;font:10px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;
+      letter-spacing:.04em;
+    }
+    .tag.one{top:8%;right:4%}.tag.two{left:3%;bottom:23%}.tag.three{right:8%;bottom:7%}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes spinReverse{to{transform:rotate(-360deg)}}
+    @keyframes pulse{0%,100%{transform:scale(.96);opacity:.25}50%{transform:scale(1.06);opacity:.8}}
+
+    .ticker{
+      border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+      overflow:hidden;white-space:nowrap;padding:15px 0;color:#68645d;
+      font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.15em;
+    }
+    .ticker-inner{display:inline-block;animation:marquee 28s linear infinite}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+
+    section{padding:125px 0;border-bottom:1px solid var(--line)}
+    .section-kicker{color:#6e6a63;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.15em;text-transform:uppercase}
+    .statement{
+      max-width:920px;font-size:clamp(38px,5.5vw,76px);line-height:1.02;
+      letter-spacing:-.045em;font-weight:450;margin:24px 0 0;
+    }
+    .statement em{font-style:normal;color:var(--violet)}
+
+    .roles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);margin-top:70px}
+    .role{
+      background:var(--bg);padding:34px 30px;min-height:240px;
+    }
+    .role-no{color:#55514b;font:10px ui-monospace,SFMono-Regular,Menlo,monospace}
+    .role h3{font-size:24px;font-weight:500;margin:50px 0 12px}
+    .role p{color:var(--muted);font-size:14px;max-width:290px;line-height:1.65}
+
+    .experiments{display:grid;grid-template-columns:.8fr 1.2fr;gap:90px;align-items:start}
+    .experiments h2,.philosophy h2{
+      font-size:clamp(38px,5vw,68px);line-height:.98;letter-spacing:-.05em;
+      font-weight:450;margin:18px 0;
+    }
+    .experiments-intro{color:var(--muted);max-width:400px}
+    .console{border:1px solid var(--line);background:#0b0b0b;padding:24px}
+    .console-head{display:flex;justify-content:space-between;color:#5e5a53;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;margin-bottom:25px}
+    .log{display:grid;grid-template-columns:80px 1fr;gap:10px 18px;font:12px/1.7 ui-monospace,SFMono-Regular,Menlo,monospace}
+    .log .time{color:#4d4943}.log .text{color:#aaa49b}
+    .log .hot{color:var(--gold)}.log .violet{color:var(--violet)}
+
+    .reveal{
+      margin-top:80px;display:grid;grid-template-columns:1fr 1fr;gap:80px;
+      align-items:end;
+    }
+    .reveal-note{color:var(--muted);max-width:410px;font-size:15px;line-height:1.7}
+    .reveal-word{font-size:clamp(70px,10vw,150px);line-height:.8;letter-spacing:-.08em;text-align:right;font-weight:500}
+
+    .philosophy{display:grid;grid-template-columns:1fr 1fr;gap:90px}
+    .philosophy-copy{color:var(--muted);font-size:17px;line-height:1.8;max-width:510px}
+    .question{
+      margin-top:48px;color:var(--paper);font-size:clamp(28px,3.5vw,48px);
+      line-height:1.08;letter-spacing:-.035em;
+    }
+    .question span{color:var(--gold)}
+
+    .enter{
+      padding:150px 0 170px;text-align:center;position:relative;overflow:hidden;
+    }
+    .enter:before{
+      content:"";position:absolute;width:500px;height:500px;border-radius:50%;
+      left:50%;top:50%;transform:translate(-50%,-50%);
+      background:radial-gradient(circle,rgba(167,139,250,.08),transparent 65%);
+      pointer-events:none;
+    }
+    .enter .small{position:relative;color:#68645d;font:10px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase}
+    .enter h2{
+      position:relative;font-size:clamp(52px,8vw,105px);line-height:.88;
+      letter-spacing:-.065em;font-weight:500;margin:24px auto 38px;max-width:900px;
+    }
+    .enter a{
+      position:relative;display:inline-flex;align-items:center;gap:13px;
+      border:1px solid #403d38;padding:14px 20px;font-size:12px;
+      text-transform:uppercase;letter-spacing:.12em;transition:.25s;
+    }
+    .enter a:hover{border-color:#8c887f;transform:translateY(-2px)}
+
+    footer{
+      border-top:1px solid var(--line);padding:25px 0;display:flex;
+      justify-content:space-between;color:#59554f;font-size:11px;
+    }
+
+    @media(max-width:850px){
+      .wrap{width:min(var(--max),calc(100% - 32px))}
+      nav{height:68px}.navlinks{display:none}
+      .hero{grid-template-columns:1fr;gap:65px;padding:65px 0 90px}
+      h1{font-size:clamp(55px,15vw,90px)}
+      .stage{width:310px;height:310px}
+      .orbit{width:310px;height:310px}.orbit2{width:235px;height:235px}
+      .roles,.experiments,.philosophy,.reveal{grid-template-columns:1fr;gap:35px}
+      .roles{gap:1px}.role{min-height:190px}.role h3{margin-top:30px}
+      section{padding:90px 0}
+      .reveal-word{text-align:left}
+      .enter{padding:115px 0}
+      footer{gap:20px;flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#">MacroDreams</a>
+      <div class="navlinks">
+        <a href="#why">Why</a>
+        <a href="#experiments">Experiments</a>
+        <a href="#philosophy">Philosophy</a>
+      </div>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">A creative laboratory for possibility</div>
+          <h1>What if the impossible was only unexplored?</h1>
+          <p class="hero-lead">
+            We experiment at the edge of imagination, technology and perception.
+            Some ideas become images. Some become films. Some become code.
+            The interesting ones become something we didn't expect.
+          </p>
+          <a class="watch" href="#experiments">
+            Watch closely <span>→</span>
+          </a>
+        </div>
+
+        <!-- HERO ANIMATION: LOCKED -->
+        <div class="stage" aria-label="MacroDreams What If animation">
+          <div class="orbit"></div>
+          <div class="orbit2"></div>
+          <div class="core"><b>WHAT IF?</b></div>
+          <div class="tag one">possibility // 01</div>
+          <div class="tag two">unknown → form</div>
+          <div class="tag three">dream.exe</div>
+        </div>
+      </section>
+
+      <div class="ticker">
+        <div class="ticker-inner">
+          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
+          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
+          DREAM · QUESTION · EXPERIMENT · TRANSFORM · FAIL · DISCOVER · REPEAT ·
+        </div>
+      </div>
+
+      <section id="why">
+        <div class="section-kicker">01 / The premise</div>
+        <p class="statement">
+          When making becomes easier, <em>imagination</em> becomes the real craft.
+        </p>
+
+        <div class="roles">
+          <article class="role">
+            <div class="role-no">01 — THE QUESTION</div>
+            <h3>Deepak</h3>
+            <p>The human instinct: wonder, intuition, taste, judgment — and the question that starts everything.</p>
+          </article>
+          <article class="role">
+            <div class="role-no">02 — THE COUNTERPART</div>
+            <h3>Anika</h3>
+            <p>A curious intelligence that explores possibilities, challenges assumptions and keeps the conversation moving.</p>
+          </article>
+          <article class="role">
+            <div class="role-no">03 — THE SPACE</div>
+            <h3>MacroDreams</h3>
+            <p>The place where those two forces meet — and where an idea can become something neither side predicted.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="experiments">
+        <div class="experiments">
+          <div>
+            <div class="section-kicker">02 / The laboratory</div>
+            <h2>Don't take our word for it.</h2>
+            <p class="experiments-intro">
+              Step inside the experiments. We start with a question, choose whatever
+              medium feels right, and follow the transformation.
+            </p>
+          </div>
+
+          <div class="console">
+            <div class="console-head">
+              <span>MACRODREAMS / LIVE LOG</span><span>● RUNNING</span>
+            </div>
+            <div class="log">
+              <span class="time">00:01</span><span class="text">question received</span>
+              <span class="time">00:07</span><span class="text violet">medium selected: unknown</span>
+              <span class="time">00:14</span><span class="text">first attempt rejected</span>
+              <span class="time">00:21</span><span class="text hot">unexpected behaviour detected</span>
+              <span class="time">00:29</span><span class="text">follow the strange thing</span>
+              <span class="time">00:43</span><span class="text violet">something is emerging…</span>
+              <span class="time">00:58</span><span class="text">result: not what we imagined</span>
+              <span class="time">01:00</span><span class="text hot">result: better question</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <p class="reveal-note">
+            The goal isn't to prove that a machine can make something.
+            That's the easy part now.
+            The interesting part is discovering what becomes possible when
+            curiosity has a new kind of counterpart.
+          </p>
+          <div class="reveal-word">REVEAL.</div>
+        </div>
+      </section>
+
+      <section id="philosophy">
+        <div class="philosophy">
+          <div>
+            <div class="section-kicker">03 / The philosophy</div>
+            <h2>Two possibilities meet. Something else emerges.</h2>
+          </div>
+          <div>
+            <p class="philosophy-copy">
+              MacroDreams isn't really about AI. AI is one of the instruments.
+              The deeper experiment is the interaction itself:
+              human intuition meeting machine possibility, dream meeting transformation,
+              question meeting an answer that changes the question.
+            </p>
+            <p class="question">
+              If the medium no longer limits you,<br />
+              <span>what would you make?</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="enter">
+        <div class="small">There is always another experiment.</div>
+        <h2>Bring us a dream.</h2>
+        <a href="mailto:hello@macrodreams.ai">Enter the experiment →</a>
+      </section>
+    </main>
+
+    <footer>
+      <span>MacroDreams © 2026</span>
+      <span>curiosity → possibility → wonder</span>
+    </footer>
+  </div>
+</body>
+</html>
